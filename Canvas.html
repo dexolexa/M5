@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body
+    style="
+      background-color: rgb(24, 22, 34);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: scale(1.5);
+      position: absolute;
+      top: 200px;
+      left: 200px;
+    "
+  >
+    <canvas id="canvas" style="border: solid 4px red"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = 500;
+    canvas.height = 500;
+
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = "black";
+
+    function circle(color, x, y, fill = false) {
+      ctx.beginPath();
+
+      ctx.arc(x, y, 55, 0, Math.PI * 2, true);
+
+      if (fill) {
+        ctx.fillStyle = color;
+        ctx.fill();
+      } else {
+        ctx.fillStyle = "black";
+        ctx.fill();
+      }
+      ctx.stroke();
+    }
+
+    let current = 0;
+    function generate() {
+      circle("red", 100, 100, current == 0);
+      circle("yellow", 100, 250, current == 1);
+      circle("green", 100, 400, current == 2);
+      current++;
+      if (current > 2) {
+        current = 0;
+      }
+    }
+
+    setInterval(generate, 500);
+  </script>
+</html>

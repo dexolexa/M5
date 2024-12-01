@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paint</title>
+  </head>
+  <body>
+    <body
+      style="
+        background-color: rgb(24, 22, 34);
+
+        height: 100vh;
+      "
+    >
+      <canvas
+        id="canvas"
+        style="
+          border: solid 4px rgb(37, 44, 68);
+          border-radius: 5%;
+          background: rgb(37, 44, 68);
+        "
+      ></canvas>
+    </body>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = 500;
+      canvas.height = 500;
+      let config = {
+        lineSize: 5,
+        color: "black",
+      };
+      ctx.lineWidth = config.lineSize;
+      ctx.strokeStyle = config.color;
+      let isDrawing = false;
+      let posX = [];
+      let posY = [];
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+
+        ctx.beginPath();
+      });
+      canvas.addEventListener("mouseup", (e) => {
+        isDrawing = false;
+      });
+      canvas.addEventListener("mousemove", (e) => {
+        AddPosition(e);
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.code == "KeyC") {
+          clearCanvas();
+        }
+        if (e.code == "KeyZ") {
+          clearCanvas();
+          redrawCanvas();
+        }
+        if (e.code == "KeyS") {
+          let image = canvas
+            .toDataURL("image/png")
+            .replace("image/png", "image/octet-stream");
+          window.location.href = image;
+          saveCanvas();
+        }
+      });
+
+      function AddPosition(e) {
+        if (isDrawing) {
+          posX.push(e.clientX);
+          posY.push(e.clientY);
+          drawLine(e.clientX, e.clientY);
+        } else {
+          posX.push(false);
+          posY.push(false);
+        }
+      }
+      function redrawCanvas() {
+        posX.splice(-5);
+        posY.splice(-5);
+        console.log("hello1");
+        for (let i = 0; i < posX.length; i++) {
+          if (posX[i] == false) {
+            ctx.beginPath();
+          } else {
+            drawLine(posX[i], posY[i]);
+          }
+        }
+      }
+      function drawLine(x, y) {
+        ctx.lineWidth = config.lineSize;
+        ctx.strokeStyle = config.color;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+      }
+      function clearCanvas() {
+        canvas.width = canvas.width;
+        canvas.height = canvas.height;
+      }
+      function changeColor(color) {
+        config.color = color;
+        ctx.strokeStyle = config.color;
+      }
+      function changeLineSize(size) {
+        config.lineSize = size;
+        ctx.lineWidth = config.lineSize;
+      }
+      function saveCanvas() {
+        const link = document.createElement("a");
+        link.download = "painting.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
+    </script>
+  </body>
+</html>
