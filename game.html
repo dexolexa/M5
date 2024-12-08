@@ -56,11 +56,9 @@
     ctx.lineWidth = config.lineSize;
     ctx.strokeStyle = config.color;
 
-    function start() 
-    {
+    function start() {
       requestAnimationFrame(start);
-      if (count++ < snake.speed) 
-      {
+      if (count++ < snake.speed) {
         return;
       }
       hasmoved = false;
@@ -71,123 +69,108 @@
       finish();
     }
 
-    function getRandomInt(min, max) 
-    {
+    function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
     }
     function drawSnake() {
-        ctx.fillStyle = "green";
-        snake.x += snake.dirX
-        snake.y += snake.dirY;
-        if (snake.x <  0){
-            snake.x = canvas.width - grid;
-        }
-        else if (snake.x == canvas.width)
-        {
-            snake.x = 0;
-        } 
-        if (snake.y < 0)
-        {
-            snake.y = canvas.height - grid;
-        }
-        else if (snake.y >= canvas.height) 
-        {
-            snake.y = 0;
-        }
-        snake.tail.unshift({
-            x : snake.x,
-            y : snake.y,
-        });
-        if (snake.tail.length > snake.default_tails) 
-        {
-            snake.tail.pop();
-        }
+      ctx.fillStyle = "green";
+      snake.x += snake.dirX;
+      snake.y += snake.dirY;
+      if (snake.x < 0) {
+        snake.x = canvas.width - grid;
+      } else if (snake.x == canvas.width) {
+        snake.x = 0;
+      }
+      if (snake.y < 0) {
+        snake.y = canvas.height - grid;
+      } else if (snake.y >= canvas.height) {
+        snake.y = 0;
+      }
+      snake.tail.unshift({
+        x: snake.x,
+        y: snake.y,
+      });
+      if (snake.tail.length > snake.default_tails) {
+        snake.tail.pop();
+      }
 
-        snake.tail.forEach((tail, index) => {
-            ctx.fillStyle = "green";
-            if (index == 0){
-                ctx.fillStyle = "white";
-            }
-            ctx.fillRect(tail.x, tail.y, grid-1, grid-1);
-        })
+      snake.tail.forEach((tail, index) => {
+        ctx.fillStyle = "green";
+        if (index == 0) {
+          ctx.fillStyle = "white";
+        }
+        ctx.fillRect(tail.x, tail.y, grid - 1, grid - 1);
+      });
     }
 
-    function drawFood() 
-    {
+    function drawFood() {
       ctx.fillStyle = "red";
-      ctx.fillRect(food.x, food.y, grid-1, grid-1);
-      if (snake.x == food.x && snake.y == food.y) 
-      {
+      ctx.fillRect(food.x, food.y, grid - 1, grid - 1);
+      if (snake.x == food.x && snake.y == food.y) {
         snake.tail.unshift({
-            x : snake.x,
-            y : snake.y,
+          x: snake.x,
+          y: snake.y,
         });
-        food.x = getRandomInt(0, canvas.width/grid) * grid;
-        food.y = getRandomInt(0, canvas.height/grid) * grid;
+        food.x = getRandomInt(0, canvas.width / grid) * grid;
+        food.y = getRandomInt(0, canvas.height / grid) * grid;
       }
     }
 
-    function generateFood() 
-    {
+    function generateFood() {
       food.x = Math.floor(Math.random() * (canvas.width / grid)) * grid;
       food.y = Math.floor(Math.random() * (canvas.height / grid)) * grid;
     }
 
-    function clearCanvas() 
-    {
+    function clearCanvas() {
       canvas.width = canvas.width;
       canvas.height = canvas.height;
     }
 
-    function finish(){
-        let k = 0;
-        for (let i of snake.tail){
-            if (i.x == snake.x && i.y == snake.y){
-                k++;
-            }
-            if (k > 1){
-                alert("Game Over!");
-                k++;
-                snake.x = 0;
-                snake.y = 0;
-                snake.tail = [];
-                snake.default_tails = 1;
-                break;
-            }
+    function finish() {
+      let k = 0;
+      for (let i of snake.tail) {
+        if (i.x == snake.x && i.y == snake.y) {
+          k++;
         }
+        if (k > 1) {
+          alert("Game Over!");
+          k++;
+          snake.x = 0;
+          snake.y = 0;
+          snake.tail = [];
+          snake.default_tails = 1;
+          break;
+        }
+      }
     }
 
-    document.addEventListener("keydown", (e) =>
-    {
-        if (e.code == "KeyA" && snake.dirX == 0 && !hasmoved){
-            snake.dirX = -grid;
-            snake.dirY = 0;
-            hasmoved = true;
-        }
-        else if (e.code == "KeyD" && snake.dirX ==  0 && !hasmoved){
-            snake.dirX = grid;
-            snake.dirY = 0;
-            hasmoved = true;
-        }
-        else if (e.code == "KeyS" && snake.dirY == 0 && !hasmoved){
-            snake.dirY = grid;
-            snake.dirX = 0;
-            hasmoved = true;
-        }
-        else if (e.code == "KeyW" && snake.dirY == 0 && !hasmoved){
-            snake.dirY = -grid;
-            snake.dirX = 0;
-            hasmoved = true;
-        }
-        if (e.code == "ShiftLeft"){
-            snake.speed = 2
-        }
-    })
-    document.addEventListener("keyup", (e) =>{
-        if (e.code == "ShiftLeft"){
-            snake.speed = 10
-        }
-    })
+    document.addEventListener("keydown", (e) => {
+      if (e.code == "KeyA" && snake.dirX == 0 && !hasmoved) {
+        snake.dirX = -grid;
+        snake.dirY = 0;
+        hasmoved = true;
+      } else if (e.code == "KeyD" && snake.dirX == 0 && !hasmoved) {
+        snake.dirX = grid;
+        snake.dirY = 0;
+        hasmoved = true;
+      } else if (e.code == "KeyS" && snake.dirY == 0 && !hasmoved) {
+        snake.dirY = grid;
+        snake.dirX = 0;
+        hasmoved = true;
+      } else if (e.code == "KeyW" && snake.dirY == 0 && !hasmoved) {
+        snake.dirY = -grid;
+        snake.dirX = 0;
+        hasmoved = true;
+      }
+      if (e.code == "ShiftLeft") {
+        snake.speed = 2;
+      }
+    });
+    document.addEventListener("keyup", (e) => {
+      if (e.code == "ShiftLeft") {
+        snake.speed = 10;
+      }
+    });
 
     requestAnimationFrame(start);
   </script>
